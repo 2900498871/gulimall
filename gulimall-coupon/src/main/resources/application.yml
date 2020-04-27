@@ -5,10 +5,21 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     password: root
 
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  application:
+    name: gulimall-coupon
+
+
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
 server:
-  port: 7000
+  port: 8010
+
+
