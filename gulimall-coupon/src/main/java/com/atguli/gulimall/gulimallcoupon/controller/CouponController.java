@@ -1,9 +1,11 @@
 package com.atguli.gulimall.gulimallcoupon.controller;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +26,39 @@ import com.atguli.common.utils.R;
  * @email sunlightcs@gmail.com
  * @date 2020-04-26 23:25:42
  */
+//nacos 配置中心自动刷新配置
+@RefreshScope
 @RestController
 @RequestMapping("gulimallcoupon/coupon")
 public class CouponController {
     @Autowired
     private CouponService couponService;
+
+    @Value("${ren.username}")
+    private String username;
+    @Value("${ren.pass}")
+    private String pass;
+
+
+    @RequestMapping("/testnacos")
+    public R testnacos(){
+        return R.ok().put("username",username).put("pass",pass);
+    }
+
+
+
+
+    @RequestMapping("/member/coupons")
+    public R membercoupons(){
+        List<CouponEntity> couponEntities=new ArrayList();
+        CouponEntity c= new CouponEntity();
+        c.setCouponName("满100减10块");
+        c.setAmount(BigDecimal.valueOf(1000));
+        c.setCode("10000");
+        c.setEnableEndTime(new Date());
+        couponEntities.add(c);
+        return R.ok().put("coupons",couponEntities);
+    }
 
     /**
      * 列表
